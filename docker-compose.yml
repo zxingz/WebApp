@@ -1,12 +1,20 @@
 version: '3'
 services:
   nginx:
-    build:
-      context: ./docker
-      dockerfile: NGINX_Dockerfile
+    image: "nginx:1.17.3"
+    volumes:
+      - "logs/nginx:/var/log/nginx"
+      - "docker/nginx/conf.d:/etc/nginx/conf.d"
     ports:
       - "80:80"
+      - "443:443"
+
   redis:
     image: "redis:alpine"
     ports:
       - "6379:6379"
+
+  certbot:
+    image: "certbot/certbot"
+    depends_on:
+      - "nginx"
