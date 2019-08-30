@@ -1,7 +1,9 @@
 version: '3.7'
 services:
   nginx:
-    image: "nginx:1.17.3"
+    build:
+      context: ./docker/nginx
+      dockerfile: Dockerfile
     volumes:
       - type: bind
         source: ./logs/nginx
@@ -14,38 +16,21 @@ services:
         volume:
           nocopy: true
       - type: bind
-        source: ./docker/certbot/conf
-        target: /etc/letsencrypt
+        source: ./docker/certbot/conf/ssl-dhparams.pem
+        target: /etc/letsencrypt/ssl-dhparams.pem
         volume:
           nocopy: true
       - type: bind
-        source: ./docker/certbot/www
-        target: /var/www/certbot
-        volume:
-          nocopy: true
-      - type: bind
-        source: ./scripts/init-letsencrypt.sh
-        target: /etc/nginx/init-letsencrypt.sh
-        volume:
-          nocopy: true
-    entrypoint: "/bin/sh -c 'chmod +x /etc/nginx/init-letsencrypt.sh and /etc/nginx/init-letsencrypt.sh && while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
+          source: ./docker/certbot/conf/options-ssl-nginx.conf
+          target: /etc/letsencrypt/options-ssl-nginx.conf
+          volume:
+            nocopy: true
+    entrypoint: "nginx -g 'daemon off;'"
     ports:
       - "80:80"
       - "443:443"
 
-  certbot:
-    image: "certbot/certbot"
-    depends_on:
-      - "nginx"
-    volumes:
-      - type: bind
-        source: ./docker/certbot/conf
-        target: /etc/letsencrypt
-        volume:
-          nocopy: true
-      - type: bind
-        source: ./docker/certbot/www
-        target: /var/www/certbot
-        volume:
-          nocopy: true
-    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
+  redis:
+    image: "redis:alpine"
+    ports:
+      - "6379:6379"
