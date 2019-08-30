@@ -1,10 +1,10 @@
 FROM debian:10
 
 # update debian repo
-RUN apt update
+RUN apt-get update
 
 # install and run nginx
-RUN apt install nginx -y
+RUN apt-get install openssl nginx -y
 
 # install and configure certbot (https://certbot.eff.org/lets-encrypt/debianbuster-nginx)
 RUN apt install certbot python-certbot-nginx -y

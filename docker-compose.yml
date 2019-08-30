@@ -16,16 +16,21 @@ services:
         volume:
           nocopy: true
       - type: bind
-        source: ./docker/certbot/conf/ssl-dhparams.pem
+        source: ./docker/certbot/letsencrypt/ssl-dhparams.pem
         target: /etc/letsencrypt/ssl-dhparams.pem
         volume:
           nocopy: true
       - type: bind
-        source: ./docker/certbot/conf/options-ssl-nginx.conf
+        source: ./docker/certbot/letsencrypt/options-ssl-nginx.conf
         target: /etc/letsencrypt/options-ssl-nginx.conf
         volume:
           nocopy: true
-    entrypoint: "nginx -g 'daemon off;'"
+    restart_policy:
+      condition: on-failure
+    entrypoint: "openssl req -x509 -nodes -newkey rsa:1024 -days 1 " \
+    "-keyout /etc/letsencrypt/live/the-software.dev/privkey.pem' " \
+    "-out /etc/letsencrypt/live/the-software.dev/fullchain.pem -subj '/CN=localhost " \
+    "&& nginx -g 'daemon off;'"
     ports:
       - "80:80"
       - "443:443"
