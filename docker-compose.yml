@@ -25,8 +25,6 @@ services:
         target: /etc/letsencrypt/options-ssl-nginx.conf
         volume:
           nocopy: true
-    restart_policy:
-      condition: on-failure
     entrypoint: >
       "openssl req -x509 -nodes -newkey rsa:1024 -days 1"
       "-keyout /etc/letsencrypt/live/the-software.dev/privkey.pem'"
