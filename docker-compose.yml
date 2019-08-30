@@ -4,7 +4,7 @@ services:
     image: "nginx:1.17.3"
     volumes:
       - type: bind
-        sorce: ./logs/nginx
+        source: ./logs/nginx
         target: /var/log/nginx
         volume:
           nocopy: true
