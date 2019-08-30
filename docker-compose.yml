@@ -17,11 +17,6 @@ services:
       - "80:80"
       - "443:443"
 
-  redis:
-    image: "redis:alpine"
-    ports:
-      - "6379:6379"
-
   certbot:
     image: "certbot/certbot"
     depends_on:
