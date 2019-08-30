@@ -21,16 +21,11 @@ services:
         volume:
           nocopy: true
       - type: bind
-          source: ./docker/certbot/conf/options-ssl-nginx.conf
-          target: /etc/letsencrypt/options-ssl-nginx.conf
-          volume:
-            nocopy: true
+        source: ./docker/certbot/conf/options-ssl-nginx.conf
+        target: /etc/letsencrypt/options-ssl-nginx.conf
+        volume:
+          nocopy: true
     entrypoint: "nginx -g 'daemon off;'"
     ports:
       - "80:80"
       - "443:443"
-
-  redis:
-    image: "redis:alpine"
-    ports:
-      - "6379:6379"
