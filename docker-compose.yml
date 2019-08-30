@@ -14,20 +14,20 @@ services:
         volume:
           nocopy: true
       - type: bind
-          source: ./docker/certbot/conf
-          target: /etc/letsencrypt
-          volume:
-            nocopy: true
+        source: ./docker/certbot/conf
+        target: /etc/letsencrypt
+        volume:
+          nocopy: true
       - type: bind
-          source: ./docker/certbot/www
-          target: /var/www/certbot
-          volume:
-            nocopy: true
+        source: ./docker/certbot/www
+        target: /var/www/certbot
+        volume:
+          nocopy: true
       - type: bind
-          source: ./scripts/init-letsencrypt.sh
-          target: /etc/nginx/init-letsencrypt.sh
-          volume:
-            nocopy: true
+        source: ./scripts/init-letsencrypt.sh
+        target: /etc/nginx/init-letsencrypt.sh
+        volume:
+          nocopy: true
     entrypoint: "/bin/sh -c 'chmod +x /etc/nginx/init-letsencrypt.sh and /etc/nginx/init-letsencrypt.sh && while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
     ports:
       - "80:80"
@@ -39,13 +39,13 @@ services:
       - "nginx"
     volumes:
       - type: bind
-          source: ./docker/certbot/conf
-          target: /etc/letsencrypt
-          volume:
-            nocopy: true
+        source: ./docker/certbot/conf
+        target: /etc/letsencrypt
+        volume:
+          nocopy: true
       - type: bind
-          source: ./docker/certbot/www
-          target: /var/www/certbot
-          volume:
-            nocopy: true
+        source: ./docker/certbot/www
+        target: /var/www/certbot
+        volume:
+          nocopy: true
     entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
