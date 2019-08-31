@@ -1,12 +1,29 @@
-version: '3'
+version: '3.7'
 services:
   nginx:
     build:
-      context: ./docker
-      dockerfile: NGINX_Dockerfile
+      context: ./docker/nginx
+      dockerfile: Dockerfile
+      cache_from:
+        - webapp_nginx:latest
+    image:  webapp_nginx:latest
+    volumes:
+      - type: bind
+        source: ./logs/nginx
+        target: /var/log/nginx
+        volume:
+          nocopy: true
+      - type: bind
+        source: ./docker/nginx/conf.d
+        target: /etc/nginx/conf.d
+        volume:
+          nocopy: true
+      - type: bind
+        source: ./scripts/nginx_entrypoint.sh
+        target: /entrypoint.sh
+        volume:
+          nocopy: true
+    entrypoint: "./entrypoint.sh"
     ports:
       - "80:80"
-  redis:
-    image: "redis:alpine"
-    ports:
-      - "6379:6379"
+      - "443:443"
