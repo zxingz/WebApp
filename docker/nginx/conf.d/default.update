@@ -24,6 +24,3 @@ server {
         index  index.html index.htm;
     }
 }
-
-include /etc/nginx/conf.d/options-ssl-nginx;
-ssl_dhparam /etc/nginx/conf.d/ssl-dhparams.pem;
