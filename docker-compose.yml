@@ -29,10 +29,10 @@ services:
         volume:
           nocopy: true
       - type: bind
-          source: ./scripts/nginx_entrypoint.sh
-          target: /entrypoint.sh
-          volume:
-            nocopy: true
+        source: ./scripts/nginx_entrypoint.sh
+        target: /entrypoint.sh
+        volume:
+          nocopy: true
     entrypoint: "./entrypoint.sh"
     ports:
       - "80:80"
