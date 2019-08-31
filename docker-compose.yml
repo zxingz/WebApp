@@ -19,16 +19,6 @@ services:
         volume:
           nocopy: true
       - type: bind
-        source: ./docker/certbot/letsencrypt/ssl-dhparams.pem
-        target: /etc/letsencrypt/ssl-dhparams.pem
-        volume:
-          nocopy: true
-      - type: bind
-        source: ./docker/certbot/letsencrypt/options-ssl-nginx.conf
-        target: /etc/letsencrypt/options-ssl-nginx.conf
-        volume:
-          nocopy: true
-      - type: bind
         source: ./scripts/nginx_entrypoint.sh
         target: /entrypoint.sh
         volume:
