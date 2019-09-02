@@ -9,21 +9,15 @@ services:
     image:  webapp_app:latest
     volumes:
       - type: bind
-        source: ./logs/nginx
-        target: /var/log/nginx
+        source: ./app
+        target: /app
         volume:
           nocopy: true
       - type: bind
-        source: ./docker/nginx/conf.d
-        target: /etc/nginx/conf.d
-        volume:
-          nocopy: true
-      - type: bind
-        source: ./scripts/nginx_entrypoint.sh
+        source: ./scripts/webapp_entrypoint.sh
         target: /entrypoint.sh
         volume:
           nocopy: true
     entrypoint: "./entrypoint.sh"
     ports:
-      - "80:80"
-      - "443:443"
+      - "5000:5000"

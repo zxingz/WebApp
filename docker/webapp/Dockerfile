@@ -6,7 +6,7 @@ RUN apt-get update
 # install and pip
 RUN apt-get install python3-pip -y
 
-WORKDIR /webapp
+WORKDIR /app
 
 # get the req file
 COPY requirements.txt /requirements.txt
