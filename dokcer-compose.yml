@@ -19,7 +19,7 @@ services:
         volume:
           nocopy: true
       - type: bind
-        source: ./scripts/nginx_entrypoint.sh
+        source: ./scripts/entrypoint.sh
         target: /entrypoint.sh
         volume:
           nocopy: true
@@ -28,7 +28,8 @@ services:
         target: /app
         volume:
           nocopy: true
-    entrypoint: "./entrypoint.sh"
+    entrypoint: "sudo ./entrypoint.sh"
     ports:
       - "80:80"
       - "443:443"
+      - "5000:5000"
