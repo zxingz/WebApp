@@ -15,7 +15,7 @@ services:
           nocopy: true
       - type: bind
         source: ./docker/nginx/conf.d
-        target: /etc/nginx/conf.d
+        target: /etc/nginx/conf.d_new
         volume:
           nocopy: true
       - type: bind
