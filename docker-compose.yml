@@ -29,7 +29,7 @@ services:
         target: /app
         volume:
           nocopy: true
-    entrypoint: "sudo ./entrypoint.sh"
+    entrypoint: "sudo /entrypoint.sh"
     ports:
       - "80:80"
       - "443:443"
