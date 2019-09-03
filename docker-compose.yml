@@ -1,6 +1,7 @@
 version: '3.7'
 services:
   nginx:
+    container_name: webapp
     build:
       context: ./docker/nginx
       dockerfile: Dockerfile
@@ -15,15 +16,26 @@ services:
           nocopy: true
       - type: bind
         source: ./docker/nginx/conf.d
-        target: /etc/nginx/conf.d
+        target: /etc/nginx/conf.d_new
         volume:
           nocopy: true
       - type: bind
-        source: ./scripts/nginx_entrypoint.sh
-        target: /entrypoint.sh
+        source: ./docker/letsencrypt
+        target: /etc/letsencrypt
         volume:
           nocopy: true
-    entrypoint: "./entrypoint.sh"
+      - type: bind
+        source: ./scripts/entrypoint.sh
+        target: /./entrypoint.sh
+        volume:
+          nocopy: true
+      - type: bind
+        source: ./app
+        target: /app
+        volume:
+          nocopy: true
+    entrypoint: "sudo /entrypoint.sh"
     ports:
       - "80:80"
       - "443:443"
+      - "5000:5000"
