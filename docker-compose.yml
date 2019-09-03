@@ -21,7 +21,7 @@ services:
           nocopy: true
       - type: bind
         source: ./scripts/entrypoint.sh
-        target: /entrypoint.sh
+        target: /./entrypoint.sh
         volume:
           nocopy: true
       - type: bind
