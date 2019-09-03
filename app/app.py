@@ -13,6 +13,7 @@ app = Flask(__name__)
 # Getting current directory
 script_dir = os.path.dirname(__file__)
 
+'''
 # initializing webdriver
 chrome_options = Options()
 chrome_options.add_argument(
@@ -20,6 +21,7 @@ chrome_options.add_argument(
 chrome_options.add_argument("--headless")
 chrome_options.add_argument("--no-sandbox")
 chrome_options.add_argument("disable-gpu")
+'''
 
 # Fernet key
 fernet_key = Fernet(b'DsVOWaQ9bVqAhhswF5H5fGQyQhhhLrC_7BHW6NHAu2Y=')
@@ -48,6 +50,8 @@ def replace_all_urls(scheme, netloc,link,tag,attr):
     link[attr] = '/user/site?m=' + encrypted_url.decode('utf-8')
     return
 
+
+'''
 @app.route("/user/site")
 def site_view_var():
     msg = request.args.get('m')
@@ -69,6 +73,7 @@ def site_view_var():
         replace_all_urls(data['s'],data['n'],link,'img','src')
     driver.quit()
     return str(soup)
+'''
 
 
 @app.route("/user/<user_id>")
@@ -88,7 +93,7 @@ def user_redirect(user_id):
 
 @app.route("/")
 def index():
-    return render_template(template_name_or_list="app.html", **{'site':''})
+    return render_template(template_name_or_list="main.html", **{'site':''})
 
 
 @app.route("/<path:dummy>")
@@ -99,4 +104,4 @@ def fallback(dummy):
 
 if __name__ == "__main__":
     app.debug = True
-    app.run(host='0.0.0.0', port=5000)
+    app.run(host='localhost', port=5000)
