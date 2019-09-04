@@ -93,7 +93,7 @@ def user_redirect(user_id):
 
 @app.route("/")
 def index():
-    return render_template(template_name_or_list="main.html", **{'site':''})
+    return render_template(template_name_or_list="index.html")
 
 
 @app.route("/<path:dummy>")
@@ -104,4 +104,4 @@ def fallback(dummy):
 
 if __name__ == "__main__":
     app.debug = True
-    app.run(host='localhost', port=5000)
+    app.run(host='0.0.0.0', port=5000)
