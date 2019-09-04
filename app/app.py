@@ -93,7 +93,7 @@ def user_redirect(user_id):
 
 @app.route("/")
 def index():
-    return render_template(template_name_or_list="main.html", **{'site':''})
+    return render_template(template_name_or_list="index.html")
 
 
 @app.route("/<path:dummy>")
