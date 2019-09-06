@@ -1,30 +1,29 @@
+# Native imports
+import os
+import json
+from urllib.parse import urlparse, urlunparse
+# Installed libraries
 from flask import Flask, render_template, request, redirect
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
-import os
 from bs4 import BeautifulSoup
 from cryptography.fernet import Fernet
-from urllib.parse import urlparse, urlunparse
-import json
+from google.cloud import bigquery
 
-# Declaring app
-app = Flask(__name__)
 
-# Getting current directory
-script_dir = os.path.dirname(__file__)
+# Utility Functions
 
-'''
-# initializing webdriver
-chrome_options = Options()
-chrome_options.add_argument(
-    "user-agent='Mozilla/5.0 (iPhone; CPU iPhone OS 10_3 like Mac OS X) AppleWebKit/602.1.50 (KHTML, like Gecko) CriOS/56.0.2924.75 Mobile/14E5239e Safari/602.1'")
-chrome_options.add_argument("--headless")
-chrome_options.add_argument("--no-sandbox")
-chrome_options.add_argument("disable-gpu")
-'''
+def path_maker(paths): # combine path lists into final path
+    return '/'.join(paths)
 
-# Fernet key
-fernet_key = Fernet(b'DsVOWaQ9bVqAhhswF5H5fGQyQhhhLrC_7BHW6NHAu2Y=')
+
+def get_user_data(id):
+    client = bigquery.Client()
+    query = ("SELECT * FROM `portfolio-251217.the_software_dev.user_profile` where id='"+id+"'")
+    result = [row for row in client.query(query,location="US",)]
+    if len(result) != 1:
+        return None
+    return result[0]
 
 
 def replace_all_urls(scheme, netloc,link,tag,attr):
@@ -49,6 +48,32 @@ def replace_all_urls(scheme, netloc,link,tag,attr):
                                                    'f': sub_url_parsed.fragment}).encode('utf-8'))
     link[attr] = '/user/site?m=' + encrypted_url.decode('utf-8')
     return
+
+
+# Declaring app
+app = Flask(__name__)
+
+
+'''
+# initializing webdriver
+chrome_options = Options()
+chrome_options.add_argument(
+    "user-agent='Mozilla/5.0 (iPhone; CPU iPhone OS 10_3 like Mac OS X) AppleWebKit/602.1.50 (KHTML, like Gecko) CriOS/56.0.2924.75 Mobile/14E5239e Safari/602.1'")
+chrome_options.add_argument("--headless")
+chrome_options.add_argument("--no-sandbox")
+chrome_options.add_argument("disable-gpu")
+'''
+
+# Global Variables
+
+fernet_key = Fernet(b'DsVOWaQ9bVqAhhswF5H5fGQyQhhhLrC_7BHW6NHAu2Y=') # Fernet key
+app_dir = os.path.dirname(__file__) # Project Directory directory
+
+# Declaring environment variables
+os.environ.setdefault('GOOGLE_APPLICATION_CREDENTIALS',
+                      path_maker([app_dir,
+                                  'keys',
+                                  'Portfolio-tsd.json']))
 
 
 '''
@@ -78,11 +103,13 @@ def site_view_var():
 
 @app.route("/user/<user_id>")
 def user_space(user_id):
-    if user_id == 'vishnu':
-        return render_template(template_name_or_list="app.html", context={})
-    else:
+    user_data = get_user_data(user_id)
+    if user_data is None:
         return render_template(template_name_or_list="not_found.html",
-                               **{'path': request.url}), 404
+                               **{'msg': 'User "'+user_id+'" does not exists.'}), 404
+    else:
+        return render_template(template_name_or_list="home.html",
+                               **user_data)
 
 
 # Redirect to "/user/<user_id>"
@@ -92,8 +119,8 @@ def user_redirect(user_id):
 
 
 @app.route("/")
-def index():
-    return render_template(template_name_or_list="index.html")
+def landing():
+    return render_template(template_name_or_list="landing.html")
 
 
 @app.route("/<path:dummy>")
@@ -104,4 +131,4 @@ def fallback(dummy):
 
 if __name__ == "__main__":
     app.debug = True
-    app.run(host='0.0.0.0', port=5000)
+    app.run(host='127.0.0.1', port=5000)
