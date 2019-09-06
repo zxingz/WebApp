@@ -12,6 +12,44 @@
     <meta name="google-signin-client_id"
           content="748322532273-uk89t0u7nj1rckjlk0e8ld23un48acas.apps.googleusercontent.com">
     <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <script>
+        /**
+         * The Sign-In client object.
+         */
+        var auth2;
+
+        /**
+         * Initializes the Sign-In client.
+         */
+        var initClient = function () {
+            gapi.load('auth2', function () {
+                /**
+                 * Retrieve the singleton for the GoogleAuth library and set up the
+                 * client.
+                 */
+                auth2 = gapi.auth2.init({
+                    client_id: 'CLIENT_ID.apps.googleusercontent.com'
+                });
+
+                // Attach the click handler to the sign-in button
+                auth2.attachClickHandler('signin-button', {}, onSuccess, onFailure);
+            });
+        };
+
+        /**
+         * Handle successful sign-ins.
+         */
+        var onSuccess = function (user) {
+            console.log('Signed in as ' + user.getBasicProfile().getName());
+        };
+
+        /**
+         * Handle sign-in failures.
+         */
+        var onFailure = function (error) {
+            console.log(error);
+        };
+    </script>
 </head>
 <body class="is-preload">
 
@@ -24,7 +62,10 @@
                 <li><a href="#one">Who we are</a></li>
                 <li><a href="#two">What we do</a></li>
                 <li><a href="#three">Get in touch</a></li>
-                <li><div class="g-signin2" data-onsuccess="onSignIn" data-theme="dark" style="margin-top: 5px; alignment: right"></div></li>
+                <li>
+                    <div class="g-signin2" data-onsuccess="onSignIn" data-theme="dark"
+                         style="margin-top: 5px; alignment: right"></div>
+                </li>
             </ul>
         </nav>
     </div>
