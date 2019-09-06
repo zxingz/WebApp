@@ -3,3 +3,4 @@ cryptography==2.7
 Flask==1.1.1
 Flask-AppBuilder==2.1.11
 selenium==3.141.0
+google-cloud-bigquery=1.19.0
