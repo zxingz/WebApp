@@ -1,5 +1,3 @@
-@import url(fontawesome-all.min.css);
-
 /*
 	Hyperspace by HTML5 UP
 	html5up.net | @ajlkn
@@ -3874,7 +3872,7 @@ input, select, textarea {
 
 	#intro {
 		background-attachment: fixed;
-		background-image: url("images/intro.svg");
+		background-image: url("intro.svg");
 		background-position: top right;
 		background-repeat: no-repeat;
 		background-size: 100% 100%;
