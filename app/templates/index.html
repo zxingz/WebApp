@@ -9,7 +9,8 @@
         <link rel="stylesheet" href="/static/css/noscript.css"/>
     </noscript>
     <meta name="google-signin-scope" content="profile email">
-    <meta name="google-signin-client_id" content="748322532273-uk89t0u7nj1rckjlk0e8ld23un48acas.apps.googleusercontent.com">
+    <meta name="google-signin-client_id"
+          content="748322532273-uk89t0u7nj1rckjlk0e8ld23un48acas.apps.googleusercontent.com">
     <script src="https://apis.google.com/js/platform.js" async defer></script>
     <script>
         /**
@@ -49,7 +50,9 @@
             console.log(error);
         };
 
-        initClient();
+        window.onLoadCallback = function () {
+            initClient()
+        }
     </script>
 </head>
 <body class="is-preload">
