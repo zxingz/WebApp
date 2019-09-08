@@ -41,7 +41,7 @@
 <nav class="navbar" style="background-color: #1A1A1B">
     <div class="col-fluid" style="margin-left: 7%;margin-right: 10%;margin-bottom: 0.5%">
         <a href="/">
-        <img src="/static/asset/TSD.png" width="60px" style="overflow: hidden; transform: scale(2)">
+            <img src="/static/asset/TSD.png" width="60px" style="overflow: hidden; transform: scale(2)">
         </a>
     </div>
     <div class="col-md" style="margin-left: -2%;margin-right: 8%;margin-bottom: 0.5%">
@@ -62,19 +62,30 @@
                 <p class="card-text">{{ about }}</p>
             </div>
             <ul class="list-group list-group-flush">
-                {% if mail %}
-                <li class="list-group-item"><a href="mailto:{{ mail }}" class="card-link">{{ mail }}</a></li>
-                {% endif %}
-                {% if site %}
-                <li class="list-group-item">{{ site }}</li>
-                {% endif %}
                 <div class="card-body">
-                    <li class="list-group-item">
-                        <a href="#" class="card-link">Linkedin</a>
-                        {% if git %}
-                        <a href="{{ git }}" class="card-link">Github</a>
-                        {% endif %}
-                    </li>
+                    {% if mail %}
+                    <a href="mailto:{{ mail }}" class="card-link">
+                        <img src="/static/asset/gmail.png" width="32px">
+                    </a>
+                    {% endif %}
+
+                    {% if site %}
+                    <a href="{{ site }}" class="card-link" target="_blank">
+                        <img src="/static/asset/www.png" width="32px">
+                    </a>
+                    {% endif %}
+
+                    {% if linkedin %}
+                    <a href="{{ linkedin }}" class="card-link" target="_blank">
+                        <img src="/static/asset/LI-In-Bug.png" width="32px">
+                    </a>
+                    {% endif %}
+
+                    {% if git %}
+                    <a href="{{ git }}" class="card-link" target="_blank">
+                        <img src="/static/asset/GitHub-Mark-32px.png" width="32px">
+                    </a>
+                    {% endif %}
                 </div>
             </ul>
         </div>
@@ -87,7 +98,8 @@
                 <div class="card-body">
                     <h5 class="card-title">{{ row[1]['name'] }}</h5>
                     <p class="card-text">{{ row[1]['info_short'] }}</p>
-                    <a href="about:blank" class="btn btn-primary" data-toggle="modal" data-target="#{{ row[1]['name'] }}Modal">Launch</a>
+                    <a href="about:blank" class="btn btn-primary" data-toggle="modal"
+                       data-target="#{{ row[1]['name'] }}Modal">Launch</a>
                     <a href="{{ row[1]['repo'] }}" target="_blank">
                         <span class="badge badge-dark">Git Repo</span>
                     </a>
@@ -111,7 +123,8 @@
                                 <button type="button" class="btn btn-outline-primary">Reset</button>
                             </div>
                             <hr>
-                            <iframe name="{{ row[1]['name'] }}Frame" src="https://en.wikipedia.org/wiki/Main_Page" width="100%" height="100%" style="max-height: 80%">
+                            <iframe name="{{ row[1]['name'] }}Frame" src="https://en.wikipedia.org/wiki/Main_Page"
+                                    width="100%" height="100%" style="max-height: 80%">
                             </iframe>
                             <div>
                                 {{ row[1]['info_long'] }}
