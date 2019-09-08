@@ -78,7 +78,7 @@ chrome_options.add_argument("disable-gpu")
 # Global Variables
 
 fernet_key = Fernet(b'DsVOWaQ9bVqAhhswF5H5fGQyQhhhLrC_7BHW6NHAu2Y=') # Fernet key
-app_dir = os.path.dirname(__file__) # Project Directory directory
+app_dir = os.path.dirname(os.path.realpath(__file__)) # Project Directory directory
 
 # Declaring environment variables
 os.environ.setdefault('GOOGLE_APPLICATION_CREDENTIALS',
