@@ -1,0 +1,5 @@
+# User projects
+create table the_software_dev.user_projects (id STRING, seq NUMERIC, user_id STRING, name STRING, info_short STRING, info_long STRING, image STRING, url STRING, repo STRING)
+
+# user table
+create table the_software_dev.user_profile (id STRING, full_name STRING, photo STRING, about STRING, mail STRING, show_mail BOOLEAN, git STRING, site STRING, linkedin STRING)

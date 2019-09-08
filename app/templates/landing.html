@@ -1,0 +1,133 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>App Streaming Platform</title>
+    <meta charset="utf-8"/>
+    <link rel="stylesheet" href="/static/css/main.css"/>
+    <noscript>
+        <link rel="stylesheet" href="/static/css/noscript.css"/>
+    </noscript>
+    <meta name="google-signin-scope" content="profile email">
+    <meta name="google-signin-client_id"
+          content="748322532273-uk89t0u7nj1rckjlk0e8ld23un48acas.apps.googleusercontent.com">
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <script>
+        /**
+         * The Sign-In client object.
+         */
+        var auth2;
+
+        /**
+         * Initializes the Sign-In client.
+         */
+        var initClient = function () {
+            gapi.load('auth2', function () {
+                /**
+                 * Retrieve the singleton for the GoogleAuth library and set up the
+                 * client.
+                 */
+                auth2 = gapi.auth2.init({
+                    client_id: '748322532273-uk89t0u7nj1rckjlk0e8ld23un48acas.apps.googleusercontent.com'
+                });
+
+                // Attach the click handler to the sign-in button
+                auth2.attachClickHandler('signin-button', {}, onSuccess, onFailure);
+            });
+        };
+
+        /**
+         * Handle successful sign-ins.
+         */
+        var onSuccess = function (user) {
+            console.log('Signed in as ' + user.getBasicProfile().getName());
+        };
+
+        /**
+         * Handle sign-in failures.
+         */
+        var onFailure = function (error) {
+            console.log(error);
+        };
+
+        window.onLoadCallback = function () {
+            initClient()
+        }
+    </script>
+</head>
+<body class="is-preload">
+
+<!-- Sidebar -->
+<section id="sidebar">
+    <div class="inner">
+        <nav>
+            <ul>
+                <li><a href="#intro">Welcome</a></li>
+                <li><a href="#one">What We Do</a></li>
+                <li><a href="#three">Contact</a></li>
+            </ul>
+        </nav>
+    </div>
+</section>
+
+<!-- Wrapper -->
+<div id="wrapper">
+
+    <!-- Intro -->
+    <section id="intro" class="wrapper style1 fullscreen fade-up">
+        <div class="inner">
+            <img src="/static/asset/TSD.png" width="20%" style="transform: scale(1.2);">
+            <ul class="actions">
+                <li>
+                    <div class="g-signin2" data-onsuccess="onSignIn" data-theme="dark"
+                         style="margin-top: 5px; alignment: right"></div>
+                </li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- One -->
+    <section id="one" class="wrapper style2 fullscreen fade-up">
+        <div class="inner">
+            <h2>What We Do</h2>
+            <p> Application Streaming service for developers to showcase their working applications live through our
+                streaming platform. It combines the ideas from DDNS+Netflix+WebProxy to enable users host their
+                applications wherever they like (Cloud/ Personal Desktop) and share it with the world.</p>
+        </div>
+    </section>
+
+    <!-- Three -->
+    <section id="three" class="wrapper style1 fullscreen fade-up">
+        <div class="inner">
+            <h2>Contact</h2>
+            <section>
+                <ul class="contact">
+                    <li>
+                        <span>
+                            <a href="https://www.linkedin.com/in/zxingz/" target="_blank">
+                                <img src="/static/asset/GitHub_Logo_White.png" width="20%" style="transform: scale(0.5);">
+                            </a>
+                            <a href="https://github.com/zxingz" target="_blank">
+                                <img src="/static/asset/linkedin-3-xxl.png" width="10%" style="transform: scale(0.5);">
+                            </a>
+                             <a href="mailto:vishnu10@outlook.com">
+                                <img src="/static/asset/mail-xxl.png" width="10%" style="transform: scale(0.5);">
+                            </a>
+                        </span>
+                </ul>
+            </section>
+        </div>
+    </section>
+
+</div>
+
+<!-- Scripts -->
+<script src="/static/js/jquery.min.js"></script>
+<script src="/static/js/jquery.scrollex.min.js"></script>
+<script src="/static/js/jquery.scrolly.min.js"></script>
+<script src="/static/js/browser.min.js"></script>
+<script src="/static/js/breakpoints.min.js"></script>
+<script src="/static/js/util.js"></script>
+<script src="/static/js/main.js"></script>
+
+</body>
+</html>

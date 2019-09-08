@@ -3,4 +3,6 @@
 
 venv/
 
-app/keys/Portfolio-tsd.json
+app/keys/
+
+keys/Portfolio-tsd.json

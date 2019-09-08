@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>App Streaming Platform</title>
+    <script crossorigin src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+    <script crossorigin src="https://unpkg.com/babel-standalone@6.26.0/babel.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+            integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+            crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+            crossorigin="anonymous"></script>
+    <meta name="google-signin-scope" content="profile email">
+    <meta name="google-signin-client_id"
+          content="748322532273-uk89t0u7nj1rckjlk0e8ld23un48acas.apps.googleusercontent.com">
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+
+    <script>
+        function onSignIn(googleUser) {
+            // Useful data for your client-side scripts:
+            var profile = googleUser.getBasicProfile();
+            console.log("ID: " + profile.getId()); // Don't send this directly to your server!
+            console.log('Full Name: ' + profile.getName());
+            console.log("Image URL: " + profile.getImageUrl());
+            console.log("Email: " + profile.getEmail());
+
+            // The ID token you need to pass to your backend:
+            var id_token = googleUser.getAuthResponse().id_token;
+            console.log("ID Token: " + id_token);
+        }
+    </script>
+</head>
+<body style="background-color: #141415">
+<nav class="navbar" style="background-color: #1A1A1B">
+    <div class="col-fluid" style="margin-left: 7%;margin-right: 10%;margin-bottom: 0.5%">
+        <a href="/">
+        <img src="/static/asset/TSD.png" width="60px" style="overflow: hidden; transform: scale(2)">
+        </a>
+    </div>
+    <div class="col-md" style="margin-left: -2%;margin-right: 8%;margin-bottom: 0.5%">
+        <input class="form-control" type="search" placeholder="Search" aria-label="Search" width="50%"
+               style="background-color: #141415; color: white">
+    </div>
+    <div class="col-sm-right" style="margin-left: 1%">
+        <div class="g-signin2" data-onsuccess="onSignIn" data-theme="dark"></div>
+    </div>
+</nav>
+<div class="row" style="margin-top: 2%;">
+    <div class="col-fluid-sm-left">
+        <div class="card mx-5 my-3" style="width: 20rem;">
+            <img class="card-img-top" src="{{ photo }}"
+                 alt="profile-picture">
+            <div class="card-body">
+                <h5 class="card-title">{{ full_name }}</h5>
+                <p class="card-text">{{ about }}</p>
+            </div>
+            <ul class="list-group list-group-flush">
+                {% if mail %}
+                <li class="list-group-item"><a href="mailto:{{ mail }}" class="card-link">{{ mail }}</a></li>
+                {% endif %}
+                {% if site %}
+                <li class="list-group-item">{{ site }}</li>
+                {% endif %}
+                <div class="card-body">
+                    <li class="list-group-item">
+                        <a href="#" class="card-link">Linkedin</a>
+                        {% if git %}
+                        <a href="{{ git }}" class="card-link">Github</a>
+                        {% endif %}
+                    </li>
+                </div>
+            </ul>
+        </div>
+    </div>
+    <div class="col-md">
+        <div class="row my-2 mx-4">
+            {% for row in result %}
+            <div class="card mx-1 my-1" style="width: 15rem;">
+                <img class="card-img-top" src="{{ row[1]['image'] }}">
+                <div class="card-body">
+                    <h5 class="card-title">{{ row[1]['name'] }}</h5>
+                    <p class="card-text">{{ row[1]['info_short'] }}</p>
+                    <a href="about:blank" class="btn btn-primary" data-toggle="modal" data-target="#{{ row[1]['name'] }}Modal">Launch</a>
+                    <a href="{{ row[1]['repo'] }}" target="_blank">
+                        <span class="badge badge-dark">Git Repo</span>
+                    </a>
+                </div>
+            </div>
+
+            <div class="modal fade" id="{{ row[1]['name'] }}Modal" tabindex="-1" role="dialog"
+                 aria-labelledby="{{ row[1]['name'] }}ModalTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 95%; height: 95%">
+                    <div class="modal-content" style="max-width: 100%; height: 100%">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="{{ row[1]['name'] }}ModalTitle">{{ row[1]['name'] }}</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body" style="height: 100%">
+                            <div>
+                                <button type="button" class="btn btn-outline-primary">Back</button>
+                                <button type="button" class="btn btn-outline-primary">Forward</button>
+                                <button type="button" class="btn btn-outline-primary">Reset</button>
+                            </div>
+                            <hr>
+                            <iframe name="{{ row[1]['name'] }}Frame" src="https://en.wikipedia.org/wiki/Main_Page" width="100%" height="100%" style="max-height: 80%">
+                            </iframe>
+                            <div>
+                                {{ row[1]['info_long'] }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {% endfor %}
+        </div>
+    </div>
+</div>
+<div id="react-root"></div>
+</body>
+</html>

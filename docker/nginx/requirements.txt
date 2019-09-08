@@ -3,3 +3,8 @@ cryptography==2.7
 Flask==1.1.1
 Flask-AppBuilder==2.1.11
 selenium==3.141.0
+google-cloud-bigquery=1.19.0
+requests==2.21.0
+oauthlib==3.0.1
+pyOpenSSL==19.0.0
+Flask-Login==0.4.1
