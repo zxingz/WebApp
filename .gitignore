@@ -2,3 +2,5 @@
 .idea/
 
 venv/
+
+app/keys/Portfolio-tsd.json
