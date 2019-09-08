@@ -31,7 +31,7 @@ services:
           nocopy: true
       - type: bind
         source: ./keys
-        target: /keys
+        target: /app/keys
         volume:
           nocopy: true
     entrypoint: "sudo /entrypoint.sh"
