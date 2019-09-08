@@ -7,7 +7,7 @@ RUN sudo apt-get update
 RUN sudo apt-get install nginx -y
 
 # install and configure certbot (https://certbot.eff.org/lets-encrypt/debianbuster-nginx)
-RUN sudo apt-get install certbot python-certbot-nginx -y
+#RUN sudo apt-get install certbot python-certbot-nginx -y
 #certbot --nginx --agree-tos --email vishnu.srivastava@hotmail.com -d the-software.dev -n
 
 # install and pip
