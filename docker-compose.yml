@@ -20,11 +20,6 @@ services:
         volume:
           nocopy: true
       - type: bind
-        source: ./docker/letsencrypt
-        target: /etc/letsencrypt
-        volume:
-          nocopy: true
-      - type: bind
         source: ./scripts/entrypoint.sh
         target: /./entrypoint.sh
         volume:
