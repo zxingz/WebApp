@@ -17,6 +17,6 @@ RUN sudo apt-get install python3-pip -y
 COPY requirements.txt /requirements.txt
 
 # install python libraries
-RUN sudo pip3 install -r  /requirements.txt
+RUN sudo -H pip3 install -r  /requirements.txt
 
 WORKDIR /app
