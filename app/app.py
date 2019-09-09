@@ -192,6 +192,7 @@ def profile_space(user_id):
 
 # show user space
 @app.route("/user/<user_id>")
+@app.route("/user/<user_id>/")
 def user_space(user_id):
     user_data = get_user_data(user_id)
     if user_data is None:
@@ -209,6 +210,7 @@ def user_space(user_id):
 
 # Redirect to "/user/<user_id>"
 @app.route("/u/<user_id>")
+@app.route("/u/<user_id>/")
 def user_redirect(user_id):
     return redirect('/user/' + user_id)
 
