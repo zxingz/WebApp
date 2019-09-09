@@ -3,14 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <title>App Streaming Platform</title>
-    <script crossorigin src="https://unpkg.com/react@16/umd/react.development.js"></script>
-    <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
-    <script crossorigin src="https://unpkg.com/babel-standalone@6.26.0/babel.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"
+            integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-            crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
             integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
             crossorigin="anonymous"></script>
@@ -36,6 +32,7 @@
             console.log("ID Token: " + id_token);
         }
     </script>
+
 </head>
 <body style="background-color: #141415">
 <nav class="navbar" style="background-color: #1A1A1B">
@@ -64,80 +61,103 @@
             <ul class="list-group list-group-flush">
                 <div class="card-body">
                     {% if mail %}
-                    <a href="mailto:{{ mail }}" class="card-link">
-                        <img src="/static/asset/gmail.png" width="32px">
-                    </a>
+                        <a href="mailto:{{ mail }}" class="card-link">
+                            <img src="/static/asset/gmail.png" width="32px">
+                        </a>
                     {% endif %}
 
                     {% if site %}
-                    <a href="{{ site }}" class="card-link" target="_blank">
-                        <img src="/static/asset/www.png" width="32px">
-                    </a>
+                        <a href="{{ site }}" class="card-link" target="_blank">
+                            <img src="/static/asset/www.png" width="32px">
+                        </a>
                     {% endif %}
 
                     {% if linkedin %}
-                    <a href="{{ linkedin }}" class="card-link" target="_blank">
-                        <img src="/static/asset/LI-In-Bug.png" width="32px">
-                    </a>
+                        <a href="{{ linkedin }}" class="card-link" target="_blank">
+                            <img src="/static/asset/LI-In-Bug.png" width="32px">
+                        </a>
                     {% endif %}
 
                     {% if git %}
-                    <a href="{{ git }}" class="card-link" target="_blank">
-                        <img src="/static/asset/GitHub-Mark-32px.png" width="32px">
-                    </a>
+                        <a href="{{ git }}" class="card-link" target="_blank">
+                            <img src="/static/asset/GitHub-Mark-32px.png" width="32px">
+                        </a>
                     {% endif %}
                 </div>
             </ul>
         </div>
     </div>
     <div class="col-md">
-        <div class="row my-2 mx-4">
-            {% for row in result %}
-            <div class="card mx-1 my-1" style="width: 15rem;">
-                <img class="card-img-top" src="{{ row[1]['image'] }}">
-                <div class="card-body">
-                    <h5 class="card-title">{{ row[1]['name'] }}</h5>
-                    <p class="card-text">{{ row[1]['info_short'] }}</p>
-                    <a href="about:blank" class="btn btn-primary" data-toggle="modal"
-                       data-target="#{{ row[1]['name'] }}Modal">Launch</a>
-                    <a href="{{ row[1]['repo'] }}" target="_blank">
-                        <span class="badge badge-dark">Git Repo</span>
-                    </a>
-                </div>
-            </div>
-
-            <div class="modal fade" id="{{ row[1]['name'] }}Modal" tabindex="-1" role="dialog"
-                 aria-labelledby="{{ row[1]['name'] }}ModalTitle" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 95%; height: 95%">
-                    <div class="modal-content" style="max-width: 100%; height: 100%">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="{{ row[1]['name'] }}ModalTitle">{{ row[1]['name'] }}</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body" style="height: 100%">
-                            <div>
-                                <button type="button" class="btn btn-outline-primary">Back</button>
-                                <button type="button" class="btn btn-outline-primary">Forward</button>
-                                <button type="button" class="btn btn-outline-primary">Reset</button>
-                            </div>
-                            <hr>
-                            <iframe name="{{ row[1]['name'] }}Frame" src="{{ row[1]['url'] }}"
-                                    width="100%" height="100%" style="max-height: 80%">
-                            </iframe>
-                            <div>
-                                {{ row[1]['info_long'] }}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            {% endfor %}
+        <div id="loadProjectsSpinner"></div>
+        <div class="row my-2 mx-4" id="loadProjects">
         </div>
     </div>
 </div>
-<div id="react-root"></div>
+<script type="text/javascript">
+        $('#loadProjectsSpinner').html('<div class="spinner-border text-light" role="status">\n' +
+            '                    <span class="sr-only">Loading...</span>\n' +
+            '                </div>');
+        $.ajax({
+            type: 'GET',
+            url: "/api/projects/{{ user_id }}/",
+            data: {},
+            dataType: "json",
+            success: function (data) {
+                if (data.length > 0) {
+                    $.each(data, function (key, val) {
+                        $('#loadProjects').append('<div class="card mx-1 my-1" style="width: 15rem;">\n' +
+                            '                    <img class="card-img-top" src="'+val[1]['image']+'">\n'+
+        '                    <div class="card-body">\n'+
+        '                        <h5 class="card-title">'+val[1]['name']+'</h5>\n'+
+        '                        <p class="card-text">'+val[1]['info_short']+'</p>\n'+
+        '                        <a href="about:blank" class="btn btn-primary" data-toggle="modal"\n'+
+        '                           data-target="#'+val[1]['name']+'Modal">Launch</a>\n'+
+        '                        <a href="'+val[1]['repo']+'" target="_blank">\n'+
+        '                            <span class="badge badge-dark">Git Repo</span>\n'+
+        '                        </a>\n'+
+        '                    </div>\n'+
+        '                </div>\n'+
+        '\n'+
+        '                <div class="modal fade" id="'+val[1]['name']+'Modal" tabindex="-1" role="dialog"\n'+
+        '                     aria-labelledby="'+val[1]['name']+'ModalTitle" aria-hidden="true">\n'+
+        '                    <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 95%; height: 95%">\n'+
+        '                        <div class="modal-content" style="max-width: 100%; height: 100%">\n'+
+        '                            <div class="modal-header">\n'+
+        '                                <h5 class="modal-title" id="'+val[1]['name']+'ModalTitle">'+val[1]['name']+'</h5>\n'+
+        '                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">\n'+
+        '                                    <span aria-hidden="true">&times;</span>\n'+
+        '                                </button>\n'+
+        '                            </div>\n'+
+        '                            <div class="modal-body" style="height: 100%">\n'+
+        '                                <div>\n'+
+        '                                    <button type="button" class="btn btn-outline-primary">Back</button>\n'+
+        '                                    <button type="button" class="btn btn-outline-primary">Forward</button>\n'+
+        '                                    <button type="button" class="btn btn-outline-primary">Reset</button>\n'+
+        '                                </div>\n'+
+        '                                <hr>\n'+
+        '                                <iframe name="'+val[1]['name']+'Frame" src="'+val[1]['url']+'"\n'+
+        '                                        width="100%" height="100%" style="max-height: 80%">\n'+
+        '                                </iframe>\n'+
+        '                                <div>\n'+
+        '                                    '+val[1]['info_long']+'\n'+
+        '                                </div>\n'+
+        '                            </div>\n'+
+        '                        </div>\n'+
+        '                    </div>\n'+
+        '                </div>');
+                    });
+                } else {
+                    console.log('No Projects !');
+                }
+            },
+            error: function () {
+                console.log('Error');
+            },
+            complete: function () {
+                $('#loadProjectsSpinner').html('');
+            }
+        });
+
+    </script>
 </body>
 </html>
