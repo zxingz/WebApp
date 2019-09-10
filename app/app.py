@@ -189,6 +189,12 @@ def profile_space(user_id):
             **user_data
         )
 
+# get projects info
+@app.route("/api/projects/<user_id>/")
+@app.route("/api/projects/<user_id>")
+def api_projects(user_id):
+    return jsonify(get_user_projects(user_id))
+
 
 # show user space
 @app.route("/user/<user_id>")
@@ -204,7 +210,7 @@ def user_space(user_id):
         return render_template(
             template_name_or_list="home.html",
             **user_data,
-            result=get_user_projects(user_id)
+            user_id=user_id
         )
 
 
